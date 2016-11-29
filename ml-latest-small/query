@@ -1,0 +1,37 @@
+{
+	"_id" : "1",
+	"title" : "Toy Story (1995)",
+	"movie_id" : "1",
+	"genre" : [
+		"Adventure",
+		"Animation",
+		"Children",
+		"Comedy",
+		"Fantasy"
+	]
+}
+
+db.movies.aggregate([
+  {$unwind:"$genres"},
+  {$group:{_id:null, gnrs: {$addToSet : "$genres"} }},
+  {$project:{_id:0, genres: "$gnrs"}}
+]
+
+
+
+# another query
+
+db.test.aggregate(
+   [
+      {
+         $project:
+           {
+             item: 1,
+             discount:
+               {
+                 $cond: { if: { $gte: [ "$qty", 250 ] }, then: 30, else: 20 }
+               }
+           }
+      }
+   ]
+))
